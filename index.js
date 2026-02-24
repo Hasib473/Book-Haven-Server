@@ -38,6 +38,14 @@ async function run() {
         res.send(result)
     })
 
+    app.post('/allbooks', async(req, res) => {
+
+        const book = req.body;
+        console.log(book);
+        const result = await booksCollection.insertOne(book);
+        res.send(result);
+    })
+
 
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
