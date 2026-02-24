@@ -27,6 +27,17 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
 
+    const db = client.db('Book_Haven');
+    const booksCollection =db.collection('AllBooks');
+
+
+    app.get('/allbooks', async(req, res) => {
+
+        const result = await booksCollection.find().toArray()  // return promise 
+        console.log(result);
+        res.send(result)
+    })
+
 
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
