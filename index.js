@@ -53,6 +53,16 @@ async function run() {
         res.send(result);
     })
 
+    app.get('/latest_books', async(req, res) => {
+        const result = await booksCollection
+        .find()
+        .sort({ _id: -1 }) // Sort by _id in descending order to get the latest documents
+        .limit(6)
+        .toArray();
+
+        res.send(result);
+    })
+
 
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
