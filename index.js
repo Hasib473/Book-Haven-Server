@@ -3,6 +3,10 @@ const cors = require('cors');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 require('dotenv').config();
 
+const  admin = require("firebase-admin");
+
+const serviceAccount = require("./serviceKey.json");
+
 
 const app = express();
 
@@ -10,6 +14,11 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
+
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
 
 
 
