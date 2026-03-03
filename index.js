@@ -33,6 +33,22 @@ const client = new MongoClient(uri, {
   }
 });
 
+const verifyToken = async (req, res, next) =>{
+   const authorization = req.headers.authorization;
+
+   if (!authorization) {
+    return res.status(401).send({message : 'Unauthorized access'})
+   }
+   const token = authorization.split(' ')[1];
+    try{
+      const decode = await admin.auth().verifyIdToken(token);
+      next();
+    }
+    catch(error){
+      res.status(401).send({message : 'Unauthorized access'})
+    }
+}
+
 async function run() {
   try {
 
@@ -47,7 +63,7 @@ async function run() {
         res.send(result)
     })
 
-    app.get('/allbooks/:id', async(req, res) => {
+    app.get('/allbooks/:id',verifyToken, async(req, res) => {
         const {id}= req.params;
         const objectId = new ObjectId(id);
         const result = await booksCollection.findOne({_id  : objectId});
