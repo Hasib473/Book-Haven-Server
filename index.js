@@ -63,6 +63,13 @@ async function run() {
         res.send(result)
     })
 
+    app.get('/mybooks',async(req, res) => {
+      const email = req.query.email;
+      const result = await booksCollection.find({userEmail: email}).toArray()  // return promise
+      res.send(result);
+    }
+  )
+
     app.get('/allbooks/:id',verifyToken, async(req, res) => {
         const {id}= req.params;
         const objectId = new ObjectId(id);
