@@ -93,6 +93,19 @@ async function run() {
         const result = await booksCollection.updateOne({_id : objectId}, {$set : updatedBook});
         res.send(result);
     })
+
+
+    //delete books
+
+    app.delete('/allbooks/:id', async(req, res) => {
+        const {id} = req.params;
+        const objectId = new ObjectId(id);
+        const result = await booksCollection.deleteOne({_id : objectId});
+        res.send(result);
+    }); 
+
+
+
     app.get('/latest_books', async(req, res) => {
         const result = await booksCollection
         .find()
