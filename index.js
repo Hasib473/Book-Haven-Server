@@ -63,7 +63,7 @@ async function run() {
         res.send(result)
     })
 
-    app.get('/mybooks',async(req, res) => {
+    app.get('/mybooks',verifyToken, async(req, res) => {
       const email = req.query.email;
       const result = await booksCollection.find({userEmail: email}).toArray()  // return promise
       res.send(result);
@@ -85,6 +85,14 @@ async function run() {
         res.send(result);
     })
 
+
+    app.put('/allbooks/:id', async(req, res) => {
+        const {id} = req.params;
+        const objectId = new ObjectId(id);
+        const updatedBook = req.body;
+        const result = await booksCollection.updateOne({_id : objectId}, {$set : updatedBook});
+        res.send(result);
+    })
     app.get('/latest_books', async(req, res) => {
         const result = await booksCollection
         .find()
