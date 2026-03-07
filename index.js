@@ -54,6 +54,7 @@ async function run() {
 
     const db = client.db('Book_Haven');
     const booksCollection =db.collection('AllBooks');
+    const commentsCollection = db.collection('Comments');
 
 
     app.get('/allbooks', async(req, res) => {
@@ -115,6 +116,29 @@ async function run() {
 
         res.send(result);
     })
+
+    app.post('/comments', async (req, res) => {
+
+  const comment = req.body;
+
+  const result = await commentsCollection.insertOne(comment);
+
+  res.send(result);
+
+});
+
+
+app.get('/comments/:bookId', async (req, res) => {
+
+  const { bookId } = req.params;
+
+  const result = await commentsCollection
+    .find({ bookId: bookId })
+    .toArray();
+
+  res.send(result);
+
+});
 
 
     // Connect the client to the server	(optional starting in v4.7)
